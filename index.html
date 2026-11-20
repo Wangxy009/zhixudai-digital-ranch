@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>工银智畜贷｜数字牧场金融科技沙盘</title>
+  <script type="module" crossorigin src="./assets/index-BfG7XwBd.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DXQqzRaX.css">
+</head>
+<body>
+  <div id="app">
+    <canvas id="scene"></canvas>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-text">工银智畜贷</span>
+        <span class="brand-sep">/</span>
+        <span class="brand-sub">数字牧场金融科技沙盘</span>
+        <span class="crumb" id="crumb">牧场全景</span>
+      </div>
+      <button id="densityBtn" class="platform-btn density-btn" type="button">展示密度：专业</button>
+      <button id="techarchBtn" class="platform-btn techarch-btn" type="button">40秒技术架构</button>
+      <button id="techcutBtn" class="platform-btn techcut-btn" type="button">10秒技术样片</button>
+      <button id="pilotBtn" class="platform-btn pilot-btn" type="button">30秒技术试拍</button>
+      <button id="directorBtn" class="platform-btn director-btn" type="button">60秒技术演示</button>
+      <button id="platformBtn" class="platform-btn" type="button">真实平台</button>
+      <div class="mode-switch" role="group" aria-label="探索模式">
+        <button id="modeFree" class="mode-btn active" type="button">自由探索</button>
+        <button id="modeBiz" class="mode-btn" type="button">业务推演</button>
+        <button id="modeTech" class="mode-btn" type="button">技术透视</button>
+      </div>
+      <div class="topbar-meta">
+        <span class="pill" id="stagePill">STAGE 01 · 场景与交互</span>
+        <span class="pill ghost">模拟演示数据</span>
+      </div>
+    </header>
+
+    <div id="sceneChip" class="scene-chip">
+      <span class="chip-dot"></span>
+      <span id="sceneName">牧场全景</span>
+    </div>
+
+    <div id="nodeChip" class="node-chip">
+      <span class="node-label">当前业务节点</span>
+      <b id="nodeName">未选择</b>
+    </div>
+
+    <aside id="sourceRail" class="source-rail" hidden>
+      <div class="sr-head"><span>多源数据采集</span><em id="srCount">6 个来源</em></div>
+      <div id="sourceList" class="source-list"></div>
+      <div class="sr-flow">
+        <span id="flowState">数据流：全部来源 → 数据中心</span>
+        <div class="sr-flow-btns">
+          <button id="flowPause" type="button">暂停</button>
+          <button id="flowReset" type="button">重置</button>
+        </div>
+      </div>
+      <div class="sr-note">全部为模拟 / 机制示意数据，不代表真实设备已接入。</div>
+    </aside>
+
+    <aside id="techPanel" class="tech-panel" hidden></aside>
+    <aside id="pipelinePanel" class="tech-panel" hidden></aside>
+
+    <aside id="cowPersp" class="cow-persp" hidden>
+      <div class="cp-head">
+        <div><span class="cp-kicker">单牛数字资产透视</span><b id="cpTitle">COW-005</b></div>
+        <button id="cpClose" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="cp-ids" id="cpIds"></div>
+      <div class="cp-tabs" id="cpTabs"></div>
+      <div class="cp-body" id="cpBody"></div>
+      <div class="cp-actions">
+        <button id="cpBarn" type="button">返回牛舍</button>
+        <button id="cpHome" type="button">返回全景</button>
+      </div>
+    </aside>
+
+    <div id="moduleBar" class="module-bar" hidden>
+      <span class="mb-label">后续模块预留</span>
+      <div id="moduleSlots" class="mb-slots"></div>
+    </div>
+
+    <aside id="bizPanel" class="biz-panel" hidden>
+      <div class="biz-panel-head">
+        <div class="bp-title">业务推演</div>
+        <div class="bp-case" id="bizCaseLabel">—</div>
+      </div>
+      <label class="bp-field">案例
+        <select id="caseSelect"></select>
+      </label>
+      <div class="bp-state"><b id="bizStatus">—</b><em id="bizGate">NONE</em></div>
+      <div class="bp-progress">
+        <input id="bizSeek" type="range" min="0" max="7" step="1" value="0" />
+        <div class="bp-seq"><span id="bizSeq">seq 0 / 7</span><span id="bizAuth">模拟</span></div>
+      </div>
+      <div class="bp-controls">
+        <button id="bizPlay" class="primary" type="button">播放</button>
+        <button id="bizStep" type="button">单步</button>
+        <button id="bizReset" type="button">重置</button>
+      </div>
+      <dl class="bp-meta">
+        <div><dt>技术模块</dt><dd id="bizTech">—</dd></div>
+        <div><dt>证据来源</dt><dd id="bizEvidence">—</dd></div>
+        <div><dt>场景对象</dt><dd id="bizObject">—</dd></div>
+      </dl>
+      <div id="bizFlow" class="bp-flow" hidden>数据流：RFID-001 / CAM-001 / SENSOR-001 → DATA-01 · 机制示意</div>
+      <div id="bizWarning" class="bp-warning" hidden></div>
+      <div class="bp-note">动画只做表现：审批、放款、处置结论仅由事件状态给出。</div>
+    </aside>
+
+    <div id="cowCard" class="cow-card" hidden>
+      <div class="cc-head"><span>单牛数字透视 · 基础版</span><button id="cowCardClose" type="button" aria-label="关闭">×</button></div>
+      <div class="cc-id"><b id="ccTag">—</b><span id="ccEar">—</span></div>
+      <dl class="cc-rows" id="ccRows"></dl>
+      <div class="cc-foot"><span>机制示意 · 模拟数据</span><button id="ccPersp" type="button">数字透视</button><button id="cowBack" type="button">返回牛舍</button></div>
+    </div>
+
+    <div class="hint">
+      <span>左键旋转</span><i></i><span>右键平移</span><i></i><span>滚轮缩放</span>
+    </div>
+
+    <button id="resetBtn" class="reset-btn" type="button" title="返回牧场全景">
+      <span class="reset-icon"></span>返回牧场全景
+    </button>
+
+    <aside id="panel" class="panel">
+      <div class="panel-head">
+        <div class="panel-tag" id="panelType">对象</div>
+        <button id="panelClose" class="panel-close" type="button" aria-label="关闭">×</button>
+      </div>
+      <h2 id="panelTitle">—</h2>
+      <div class="panel-sub" id="panelSub">—</div>
+      <dl class="panel-rows" id="panelRows"></dl>
+      <div class="panel-foot">当前为第一阶段演示数据，未接入业务系统</div>
+    </aside>
+
+    <nav class="biz-nav" aria-label="业务模块">
+      <button class="biz-item" data-biz="verify">
+        <span class="biz-index">01</span>
+        <span class="biz-name">资产核验</span>
+        <span class="biz-state">占位</span>
+      </button>
+      <button class="biz-item" data-biz="valuation">
+        <span class="biz-index">02</span>
+        <span class="biz-name">动态估值</span>
+        <span class="biz-state">占位</span>
+      </button>
+      <button class="biz-item" data-biz="monitor">
+        <span class="biz-index">03</span>
+        <span class="biz-name">智能监管</span>
+        <span class="biz-state">占位</span>
+      </button>
+      <button class="biz-item" data-biz="risk">
+        <span class="biz-index">04</span>
+        <span class="biz-name">风险处置</span>
+        <span class="biz-state">占位</span>
+      </button>
+    </nav>
+
+    <div id="platformOverlay" class="focus-overlay platform-overlay" hidden>
+      <header class="fo-head">
+        <div class="fo-title">
+          <span class="fo-kicker">真实业务平台 · 只读展示</span>
+          <b>客户端 / 银行端</b>
+          <span class="fo-sub" id="platformSub">本地运行 · 登录由平台自身校验</span>
+        </div>
+        <div class="fo-actions">
+          <button id="platformExternal" type="button">新窗口打开</button>
+          <button id="platformReload" type="button">重载</button>
+          <button id="platformClose" type="button">返回三维</button>
+        </div>
+      </header>
+      <div class="platform-tabs" id="platformTabs">
+        <button type="button" data-tab="client" class="active">客户端</button>
+        <button type="button" data-tab="bank">银行端</button>
+        <button type="button" data-tab="watch">三端大屏</button>
+        <span id="platformStatus" class="platform-status">连接：本地平台</span>
+      </div>
+      <div class="platform-frame-wrap">
+        <div id="platformLoading" class="platform-loading">正在加载真实平台页面…</div>
+        <iframe id="platformFrame" title="真实业务平台" referrerpolicy="no-referrer"></iframe>
+      </div>
+      <div class="platform-note" id="platformNote">真实平台页面由本地运行实例提供；沙盘不注入凭证、不绕过登录、不调用写接口。若页面空白，请先启动真实平台后端与前端。</div>
+    </div>
+
+    <div id="financeOverlay" class="focus-overlay" hidden>
+      <header class="fo-head">
+        <div class="fo-title">
+          <span class="fo-kicker">金融计算 · 演示计算器</span>
+          <b>动态估值与授信测算</b>
+          <span class="fo-sub" id="financeSub">SIM-FIN-01 · SIM-PARAM-v1.0</span>
+        </div>
+        <div class="fo-actions">
+          <button id="financeFull" type="button">全屏</button>
+          <button id="financeClose" type="button">返回三维</button>
+        </div>
+      </header>
+      <div class="fin-toolbar">
+        <div class="fin-scenarios" id="finScenarios"></div>
+        <div class="fin-mode-tabs" id="finModeTabs" hidden><button type="button" data-finmode="platform" class="active">真实平台记录</button><button type="button" data-finmode="calc">独立复算</button></div>
+        <span class="fin-badge" id="finParamBadge">SIM-PARAM-v1.0 · 非银行审批参数</span>
+        <button id="finReset" type="button">重置基准</button>
+      </div>
+      <div class="fin-layout">
+        <div id="finHero" class="fin-hero" hidden></div>
+        <div id="finReal" class="fin-real" hidden></div>
+        <section class="fin-panel fin-inputs">
+          <div class="fin-panel-head"><b>A · 数据输入</b><span>可修改演示参数</span></div>
+          <div id="finInputs" class="fin-inputs-body"></div>
+          <div class="fin-note">修改只影响本地计算，不写回事件包，不改变业务状态。</div>
+        </section>
+        <section class="fin-panel fin-flow">
+          <div class="fin-panel-head"><b>B · 计算流程</b><span>点击节点查看公式与代入值</span></div>
+          <div id="finFlow" class="fin-flow-nodes"></div>
+          <div id="finFormula" class="fin-formula"></div>
+          <div id="finCompare" class="fin-compare"></div>
+          <div id="finConcepts" class="fin-concepts"></div>
+        </section>
+        <aside class="fin-panel fin-results">
+          <div class="fin-panel-head"><b>C · 结果分析</b><span id="finScenarioName">基准情景</span></div>
+          <div id="finCards" class="fin-cards"></div>
+          <div id="finGate" class="fin-gate"></div>
+          <div class="fin-panel-head sub"><b>D · 证据与审计</b><span id="finComputedAt"></span></div>
+          <div id="finEvidence" class="fin-evidence"></div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="agentOverlay" class="focus-overlay" hidden>
+      <header class="fo-head">
+        <div class="fo-title">
+          <span class="fo-kicker">智能体 · 任务编排</span>
+          <b>核查 / 复核协同工作台</b>
+          <span class="fo-sub" id="agentSub">模拟任务流程 · 非平台日志</span>
+        </div>
+        <div class="fo-actions">
+          <button id="agentFull" type="button">全屏</button>
+          <button id="agentClose" type="button">返回三维</button>
+        </div>
+      </header>
+      <div class="agent-toolbar">
+        <div class="agent-cases" id="agentCases"></div>
+        <span class="agent-source" id="agentSource">模拟任务流程 · 非平台日志</span>
+        <span class="agent-gate" id="agentGate">待人工复核</span>
+      </div>
+      <div class="agent-layout">
+        <aside class="agent-panel agent-left">
+          <div class="fin-panel-head"><b>任务清单 T1–T11</b><span>点击查看详情</span></div>
+          <div id="agentTasks" class="agent-tasks"></div>
+        </aside>
+        <section class="agent-panel agent-mid">
+          <div class="fin-panel-head"><b>编排流程</b><span id="agentFlowNote">8 个阶段 · 智能体辅助</span></div>
+          <div id="agentHero" class="agent-hero" hidden></div>
+          <div id="agentStages" class="agent-stages"></div>
+          <div id="agentEvidence" class="agent-evidence"></div>
+          <div id="agentRules" class="agent-rules"></div>
+          <div id="agentTimeline" class="agent-timeline"></div>
+        </section>
+        <aside class="agent-panel agent-right">
+          <div class="fin-panel-head"><b>任务详情</b><span id="agentTaskId">T1</span></div>
+          <div id="agentDetail" class="agent-detail"></div>
+          <div class="fin-panel-head sub"><b>人工接管</b><span>只读</span></div>
+          <div id="agentHuman" class="agent-human"></div>
+          <div class="fin-panel-head sub" id="agentAuditHead"><b>审计记录</b><span id="agentAuditSource">模拟</span></div>
+          <div id="agentAudit" class="agent-audit"></div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="visionOverlay" class="focus-overlay" hidden>
+      <header class="fo-head">
+        <div class="fo-title">
+          <span class="fo-kicker">YOLO · 视觉观察</span>
+          <b>视觉分析工作台</b>
+          <span class="fo-sub" id="visionSub">CAM-001 · 真实研究样例</span>
+        </div>
+        <div class="fo-actions">
+          <button id="visionFull" type="button">全屏</button>
+          <button id="visionClose" type="button">返回三维</button>
+        </div>
+      </header>
+      <div class="vision-layout">
+        <section class="vl-left">
+          <div class="vl-stage">
+            <img id="visionImg" alt="真实摄像头帧与检测框" />
+            <svg id="visionBoxes" viewBox="0 0 960 576" preserveAspectRatio="none"></svg>
+            <div class="vl-badge" id="visionBadge">真实测试帧 · 模型预测</div>
+          </div>
+          <div class="vl-toolbar">
+            <button type="button" data-view="pred" class="active">模型预测</button>
+            <button type="button" data-view="truth">人工标注</button>
+            <button type="button" data-view="both">叠加对比</button>
+            <span class="vision-legend"><i class="lg-pred"></i>模型预测 <i class="lg-truth"></i>人工标注</span>
+            <span class="vl-meta" id="visionMeta"></span>
+          </div>
+          <div class="vl-steps" id="visionSteps"></div>
+        </section>
+        <section class="vl-mid">
+          <div class="vm-head"><b>检测 / 观察结果</b><span id="visionCount"></span></div>
+          <div id="visionDetections" class="vm-list"></div>
+          <p class="vm-note">检测结果只支持观察判断，不等同健康诊断、法律事实或违约结论。</p>
+        </section>
+        <aside class="vl-right">
+          <div class="vr-head"><b id="visionStepTitle">原始视频帧</b><span id="visionStepAuth"></span></div>
+          <div id="visionStepBody" class="vr-body"></div>
+          <div id="visionSources" class="vr-sources"></div>
+          <div id="visionMetrics" class="vr-metrics"></div>
+          <div class="vr-actions">
+            <button id="visionGraph" class="primary" type="button">查看知识图谱</button>
+            <button id="vision3D" type="button">返回摄像头</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="graphOverlay" class="focus-overlay" hidden>
+      <header class="fo-head">
+        <div class="fo-title">
+          <span class="fo-kicker">知识图谱 · 关系分析</span>
+          <b>证据关联与核查线索</b>
+          <span class="fo-sub" id="graphSub">演示资产 · COW-005 / SIM-POST-003</span>
+        </div>
+        <div class="fo-actions">
+          <button id="graphFull" type="button">全屏</button>
+          <button id="graphClose" type="button">返回三维</button>
+        </div>
+      </header>
+      <div class="graph-layout">
+        <aside class="graph-side">
+          <label class="gs-search">搜索节点
+            <input id="graphSearch" type="search" placeholder="输入 COW-005 / EV-EAR-007 …" />
+          </label>
+          <div class="gs-section">实体类型</div>
+          <div id="graphTypes" class="gs-types"></div>
+          <div class="gs-section">关联事件</div>
+          <select id="graphEvent" class="gs-select"></select>
+          <div class="gs-section">示例链路</div>
+          <div class="gs-chains">
+            <button data-chain="A" type="button">A · 身份关联</button>
+            <button data-chain="B" type="button">B · 观察与风险</button>
+          </div>
+          <div class="gs-note" id="graphChainNote">关系不等于法律权属；风险线索不等于违约。</div>
+          <button id="graph3D" class="gs-return" type="button">返回对应三维对象</button>
+        </aside>
+        <div class="graph-canvas"><svg id="graphSvg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg></div>
+        <aside class="graph-evidence" id="graphEvidence"></aside>
+      </div>
+    </div>
+
+    <div id="tooltip" class="tooltip"></div>
+    <div id="toast" class="toast"></div>
+
+    <div id="loader" class="loader">
+      <div class="loader-mark"></div>
+      <div class="loader-title">正在构建数字牧场</div>
+      <div class="loader-bar"><i id="loaderBar"></i></div>
+      <div class="loader-note" id="loaderNote">加载场景与模型资源…</div>
+    </div>
+  </div>
+
+</body>
+</html>

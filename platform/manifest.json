@@ -1,0 +1,39 @@
+{
+ "platform": {
+  "name": "工银智畜贷 v3.1 最小可信落地版",
+  "stack": "FastAPI + Vue3 + SQLite",
+  "version": "v3.1",
+  "generatedAt": "2026-10-28T12:32:03",
+  "source": "REAL_PLATFORM_DERIVED",
+  "note": "本地运行真实平台代码生成；演示校准数据；已脱敏"
+ },
+ "cases": [
+  {
+   "file": "platform-cases.json",
+   "caseKey": "PRE_LOAN",
+   "appId": "AA1D90CDA",
+   "label": "正常贷前：受理→确权→估值→授信→待人工复核",
+   "status": "待人工复核",
+   "caseType": "PRE_LOAN",
+   "authenticity": "REAL_PLATFORM"
+  },
+  {
+   "file": "platform-cases.json",
+   "caseKey": "IDENTITY_EXCEPTION",
+   "appId": "A09E185B2",
+   "label": "贷前身份异常：重复抵押 → N4 人工接管",
+   "status": "受理中",
+   "caseType": "IDENTITY_EXCEPTION",
+   "authenticity": "REAL_PLATFORM"
+  },
+  {
+   "file": "platform-cases.json",
+   "caseKey": "POST_LOAN",
+   "appId": "ACA6FEB78",
+   "label": "独立贷后：产奶偏离 → 预警处置 → R3 待人工",
+   "status": "贷后监测中",
+   "caseType": "POST_LOAN",
+   "authenticity": "REAL_PLATFORM"
+  }
+ ]
+}
